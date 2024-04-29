@@ -38,14 +38,18 @@ def twitter_search(keyword):
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()  # Raise an exception for HTTP errors
-        data_2 = [{
-            "tweet_id": tweet['tweet_id'],
-            "text": tweet['text'],
-            "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
-            "tweet_link": tweet['expanded_url'],
-            "user_screen_name": tweet['user']['username'],
-        } for tweet in response.json()['results']]
-        return data_2
+        for tweet in response.json()['results']:
+            
+            data_2 = [{
+                "tweet_id": tweet['tweet_id'],
+                "text": tweet['text'],
+                "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
+                "tweet_link": tweet['expanded_url'],
+                "user_screen_name": tweet['user']['username'],
+            } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])]
+
+
+            return data_2
     except requests.exceptions.RequestException as e:
         print("Error:", e)
         return None  # Return None to indicate failure
@@ -100,12 +104,8 @@ def influencers_twitter(keyword):
 
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top 10 Influencers with thier name and clickable twitter profile links for the following Keyword: {keyword}
-            ,each influencers seperated by space ,in a single line,don't give the numbering
-            
-            
-            
-            """)
+             You are a helpful assistant that will help me in finding the Top 10 Influencers with thier name and clickable twitter profile links for the following Keyword: {keyword}
+            in a format for example ["Name of Influencer 1" : "Twitter link" , "Name of Influencer 2" : "Twitter link" and so on], without numbering  and without "\"  and should be in a single line            """)
 
         return response.text
         
@@ -141,7 +141,7 @@ def Trending_topics_twitter(keyword):
         response = model.generate_content(f"""
   
             You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
-            ,in the form of list, in a single line
+            ,in the form of list, in a single line, only the topics without any symbol and numbering
             """)
 
         return response.text
@@ -159,18 +159,20 @@ def getresponse():
     print(f'\n Fetching tweets for- {keyword} \n')
 
     df_twitter=twitter_search(keyword)
-    top_influencers = influencers_twitter(keyword)
+    top_influencers = (influencers_twitter(keyword))
     top_hashtags = (Hashtags_twitter(keyword)).split(' ')
-    top_trending_topics = Trending_topics_twitter(keyword)
+    top_trending_topics = (Trending_topics_twitter(keyword)).split(' ')
 
     
     print(f'\n Top 10 Influencers for {keyword}: \n\n', type(top_influencers))    
-    print("Top 10 Hashtags for {keyword}:", (top_hashtags))
+    print(f'\n Top 10 Influencers for {keyword}: \n\n', top_influencers)    
+
+    #print("Top 10 Hashtags for {keyword}:", (top_hashtags))
     #print("Top trending topics for {keyword}:", top_trending_topics)
 
 
-    print(df_twitter)
+    #print(df_twitter)
 
     return df_twitter
 
-#getresponse()
+getresponse()
