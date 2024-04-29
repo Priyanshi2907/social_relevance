@@ -30,9 +30,10 @@ def twitter_search(keyword):
     }
     
     headers = {
-    	'X-RapidAPI-Key': 'f7173b49d5msh09de40987862b60p194beajsn834236db5d67',
+    	'X-RapidAPI-Key': '6b4e137a0dmshdfe171472b83b03p1dba21jsncf717056731c',
       'X-RapidAPI-Host': 'twitter154.p.rapidapi.com'
     }
+   
     
     try:
         response = requests.get(url, headers=headers, params=querystring)
@@ -93,16 +94,16 @@ model = genai.GenerativeModel(
 
 def influencers_twitter(keyword):
     """
-    Fetches Top Influencers and Hashtags for the given keyword
+    Fetches Top Influencers ,Hashtags ,Top trending Topics for the given keyword
     """
     try:
 
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top 10 Influencers with thier clickable and activate profile links and Top Trending Hashtags for the following Keyword: {keyword}
-            And also Top trending topics in the world.
+            You are a helpful assistant that will help me in finding the Top 10 Influencers with thier name and clickable twitter profile links for the following Keyword: {keyword}
+            ,each influencers seperated by space ,in a single line,don't give the numbering
             
-            Output should contain only Influencers names and any one of their clickable social handles.
+            
             
             """)
 
@@ -111,7 +112,44 @@ def influencers_twitter(keyword):
     except Exception as e:
         print(e)
         return 'No Response'
-    
+
+def Hashtags_twitter(keyword):
+    """
+    Fetches Top Hashtags  for the given keyword
+    """
+    try:
+
+        response = model.generate_content(f"""
+  
+            You are a helpful assistant that will help me in finding the Top 10 Trending Hashtags  for the following Keyword: {keyword}                        
+            seperated by only space,in the form of list,in a single line
+            
+            """)
+
+        return response.text
+        
+    except Exception as e:
+        print(e)
+        return 'No Response'
+
+def Trending_topics_twitter(keyword):
+    """
+    Fetches Top Trending topics  for the given keyword
+    """
+    try:
+
+        response = model.generate_content(f"""
+  
+            You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
+            ,in the form of list, in a single line
+            """)
+
+        return response.text
+        
+    except Exception as e:
+        print(e)
+        return 'No Response'
+
 def getresponse():
     keyword=input("Enter keyword for twitter: ")
     country=input("enter country for twitter: ")
@@ -122,8 +160,14 @@ def getresponse():
 
     df_twitter=twitter_search(keyword)
     top_influencers = influencers_twitter(keyword)
+    top_hashtags = (Hashtags_twitter(keyword)).split(' ')
+    top_trending_topics = Trending_topics_twitter(keyword)
 
-    print(f'\n Top 20 Influencers for {keyword}: \n\n', top_influencers)
+    
+    print(f'\n Top 10 Influencers for {keyword}: \n\n', type(top_influencers))    
+    print("Top 10 Hashtags for {keyword}:", (top_hashtags))
+    #print("Top trending topics for {keyword}:", top_trending_topics)
+
 
     print(df_twitter)
 

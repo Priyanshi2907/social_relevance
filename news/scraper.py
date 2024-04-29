@@ -154,16 +154,36 @@ model = genai.GenerativeModel(
     safety_settings=safety_settings
 )
 
-def influencers_news(keyword):
+def relatedwords_news(keyword):
     """
-    Fetches Top Related Keywords, Authors for the given keyword
+    Fetches Top Related Keywords for the given keyword
     """
     try:
         
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top 10 Related words, Top 10 authors for the following Keyword: {keyword}
-            And also Top trending topics in the world.
+            You are a helpful assistant that will help me in finding the Top 10 Related words for the following Keyword: {keyword}
+            in the form of list,don't include numbering,don't include "-","*" also
+            
+            
+            """)
+
+        return response.text
+        
+    except Exception as e:
+        print(e)
+        return "No response"
+    
+def authors_news(keyword):
+    """
+    Fetches Top  Authors for the given keyword
+    """
+    try:
+        
+        response = model.generate_content(f"""
+  
+            You are a helpful assistant that will help me in finding the  Top 10 authors for the following Keyword: {keyword}
+            ,in the form of list,don't include numbering,don't include"-","*" also
             
             
             """)
@@ -174,6 +194,24 @@ def influencers_news(keyword):
         print(e)
         return "No response"
 
+def Trending_topics_news(keyword):
+    """
+    Fetches Top Trending topics  for the given keyword
+    """
+    try:
+
+        response = model.generate_content(f"""
+  
+            You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
+             ,in the form of list,in a single line,don't include numbering,don't include"-","*" also
+            """)
+
+        return response.text
+        
+    except Exception as e:
+        print(e)
+        return 'No Response'
+    
 def take_keyword():
     keyword = input("Enter keyword: ")
     country= input("Enter Country : ")
@@ -182,8 +220,14 @@ def take_keyword():
     print(f'\n Fetching news  for- {keyword} \n')
     news_data = google_news_scraper(keyword)
     
-    top_influencers = influencers_news(keyword)
-    print(f'\n Top 20 Influencers for {keyword}: \n\n', top_influencers)
+    relatedwords = relatedwords_news(keyword)
+    authors = authors_news(keyword)
+    Trending_topics = Trending_topics_news(keyword)
+
+    print(f'\n Top 10 Related Words for {keyword}: \n\n', relatedwords)
+    print("Top 10 Authors for {keyword}:", authors)
+    print("Top trending topics for {keyword}:", Trending_topics)
+
 
     df = pd.DataFrame(news_data)
     print(df)
