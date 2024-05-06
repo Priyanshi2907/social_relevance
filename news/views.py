@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .scraper import *
+from .auth_scraper import *
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response

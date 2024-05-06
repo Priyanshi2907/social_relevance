@@ -34,10 +34,10 @@ def headlines(link):
 
 def google_news_scraper(keyword):
     ll = []
-    for j in range(0,20,5):
+    for j in range(0,20,10):
         link = f'https://www.google.co.in/search?q={keyword}+news&sca_esv=64568e91d4c772e8&tbm=nws&prmd=nivsmbtz&sxsrf=ACQVn0-qaS0objyOU3CfpFe1WOR3BQfJHw:1712395312013&ei=MBQRZoQ06-6x4w_n_4nQDA&start={j}&sa=N&ved=2ahUKEwiEjKbSoa2FAxVrd2wGHed_Aso4RhDy0wN6BAgDEAQ&biw=1536&bih=695&dpr=1.25'
         #link = 'https://www.google.com/search?q='+str(keyword) +' '+'news'
-        
+        driver.implicitly_wait(5)
         ll.append(link)
 
     data = []
@@ -52,10 +52,13 @@ def google_news_scraper(keyword):
         news = soup.find_all("div",attrs={'class':"SoaBEf"})
         for row in news:
             des = {}
+            driver.implicitly_wait(5)
             title = row.find('div',attrs={'class':"n0jPhd ynAwRc MBeuO nDgy9d"}).text
             url = row.find("a",attrs={'class':"WlydOe"}).get('href')
+            driver.implicitly_wait(5)
             source = row.find('div',attrs={'class':"MgUUmf NUnG9d"}).text
             date = row.find('div',attrs={'class':"OSrXXb rbYSKb LfVVr"}).text
+            driver.implicitly_wait(5)
             images = row.find('img').get('src')
             
             if url not in visited_urls and date not in visited_url_date:
@@ -174,63 +177,63 @@ model = genai.GenerativeModel(
     safety_settings=safety_settings
 )
 
-def relatedwords_news(keyword):
-    """
-    Fetches Top Related Keywords for the given keyword
-    """
-    try:
+# def relatedwords_news(keyword):
+#     """
+#     Fetches Top Related Keywords for the given keyword
+#     """
+#     try:
         
-        response = model.generate_content(f"""
+#         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top 10 Related words for the following Keyword: {keyword}
-            in the form of list in a single line and without numbering and any symbol
+#             You are a helpful assistant that will help me in finding the Top 10 Related words for the following Keyword: {keyword}
+#             in the form of list in a single line and without numbering and any symbol
             
             
-            """)
+#             """)
 
-        return response.text
+#         return response.text
         
-    except Exception as e:
-        print(e)
-        return "No response"
+#     except Exception as e:
+#         print(e)
+#         return "No response"
     
-def authors_news(keyword):
-    """
-    Fetches Top  Authors for the given keyword
-    """
-    try:
+# def authors_news(keyword):
+#     """
+#     Fetches Top  Authors for the given keyword
+#     """
+#     try:
         
-        response = model.generate_content(f"""
+#         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the  Top 10 authors for the following Keyword: {keyword}
-            ,in the form of list in a single line and without numbering and any symbol
+#             You are a helpful assistant that will help me in finding the  Top 10 authors for the following Keyword: {keyword}
+#             ,in the form of list in a single line and without numbering and any symbol
             
             
-            """)
+#             """)
 
-        return response.text
+#         return response.text
         
-    except Exception as e:
-        print(e)
-        return "No response"
+#     except Exception as e:
+#         print(e)
+#         return "No response"
 
-def Trending_topics_news(keyword):
-    """
-    Fetches Top Trending topics  for the given keyword
-    """
-    try:
+# def Trending_topics_news(keyword):
+#     """
+#     Fetches Top Trending topics  for the given keyword
+#     """
+#     try:
 
-        response = model.generate_content(f"""
+#         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
-             ,in the form of list in a single line and without numbering and any symbol
-            """)
+#             You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
+#              ,in the form of list in a single line and without numbering and any symbol
+#             """)
 
-        return response.text
+#         return response.text
         
-    except Exception as e:
-        print(e)
-        return 'No Response'
+#     except Exception as e:
+#         print(e)
+#         return 'No Response'
     
 def take_keyword():
     keyword = input("Enter keyword: ")
@@ -240,9 +243,9 @@ def take_keyword():
     print(f'\n Fetching news  for- {keyword} \n')
     news_data = google_news_scraper(keyword)
     
-    relatedwords = relatedwords_news(keyword)
-    authors = authors_news(keyword)
-    Trending_topics = Trending_topics_news(keyword)
+    # relatedwords = relatedwords_news(keyword)
+    # authors = authors_news(keyword)
+    # Trending_topics = Trending_topics_news(keyword)
 
     # print(f'\n Top 10 Related Words for {keyword}: \n\n', relatedwords)
     # print("Top 10 Authors for {keyword}:", authors)
@@ -252,4 +255,4 @@ def take_keyword():
     df = pd.DataFrame(news_data)
     print(df)
 
-take_keyword()
+#take_keyword()
