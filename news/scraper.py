@@ -18,10 +18,26 @@ import google.generativeai as genai
 driver = webdriver.Chrome()
 GOOGLE_API_KEY= 'AIzaSyAEgGg08BmZIDyxOiCVeRlibO9OTOLxTMs'
 
+def headlines(link):
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+    config = Config()
+    config.browser_user_agent = user_agent
+    link.strip()
+    page = Article(str(link), config=config)
+    try:
+        page.download()
+        page.parse()
+        return page.title
+    except:
+        return 'Untitled Page'
+
+
 def google_news_scraper(keyword):
     ll = []
-    for j in range(0,20,10):
+    for j in range(0,20,4):
         link = f'https://www.google.co.in/search?q={keyword}+news&sca_esv=64568e91d4c772e8&tbm=nws&prmd=nivsmbtz&sxsrf=ACQVn0-qaS0objyOU3CfpFe1WOR3BQfJHw:1712395312013&ei=MBQRZoQ06-6x4w_n_4nQDA&start={j}&sa=N&ved=2ahUKEwiEjKbSoa2FAxVrd2wGHed_Aso4RhDy0wN6BAgDEAQ&biw=1536&bih=695&dpr=1.25'
+        #link = 'https://www.google.com/search?q='+str(keyword) +' '+'news'
+        print(link)
         ll.append(link)
 
     data = []
@@ -86,43 +102,31 @@ def google_news_scraper(keyword):
     for item in list1:
         item['title'] = headlines(item['link']) 
 
-    # list1 = [x for x in list1 if isinstance(x, dict) and x.get('title') is not None and ('Error' not in x['title']) and ('Captcha' not in x['title']) and
-    #          ('Are you a robot?' not in x['title']) and ('Untitled Page' not in x['title']) and 
-    #          ('Subscribe' not in x['title']) and ('You are being redirected...' not in x['title']) and 
-    #          ('Not Acceptable!' not in x['title']) and ('403 Forbidden' not in x['title']) and 
-    #          ('ERROR: The request could not be satisfied' not in x['title']) and ('Just a moment...' not in x['title']) and 
-    #          ('403 - Forbidden: Access is denied.' not in x['title']) and ('Not Found' not in x['title']) and 
-    #          ('Page Not Found' not in x['title']) and ('StackPath' not in x['title']) and ('Access denied' not in x['title'])
-    #          and ('Yahoo' not in x['title']) and ('Stock Market Insights' not in x['title']) and 
-    #          ('Attention Required!' not in x['title']) and ('Access Denied' not in x['title'])
-    #          and ('403 forbidden' not in x['title']) and ('Too Many Requests' not in x['title'])
-    #          and ('403 - Forbidden' not in x['title']) and ('NCSC' not in x['title'])
-    #          and ('BC Gov News' not in x['title']) and ('The Verge' not in x['title']) and ('Trackinsight' not in x['title'])
-    #          and ('Morning Headlines' not in x['title']) and ('Forbidden' not in x['title'])
-    #          and ('forbidden' not in x['title']) and ('Detroit Free Press' not in x['title'])
-    #          and ('reuters.com' not in x['title']) and ('403 unauthorized' not in x['title'])
-    #          and ('403 not available now' not in x['title']) and ('Not Acceptable' not in x['title']) 
-    #          and ('Your access to this site has been limited by the site owner' not in x['title'])
-    #          and ('404 - File or directory not found.' not in x['title'])]
+    list1 = [x for x in list1 if isinstance(x, dict) and x.get('title') is not None and ('Error' not in x['title']) and ('Captcha' not in x['title']) and
+             ('Are you a robot?' not in x['title']) and ('Untitled Page' not in x['title']) and 
+             ('Subscribe' not in x['title']) and ('You are being redirected...' not in x['title']) and 
+             ('Not Acceptable!' not in x['title']) and ('403 Forbidden' not in x['title']) and 
+             ('ERROR: The request could not be satisfied' not in x['title']) and ('Just a moment...' not in x['title']) and 
+             ('403 - Forbidden: Access is denied.' not in x['title']) and ('Not Found' not in x['title']) and 
+             ('Page Not Found' not in x['title']) and ('StackPath' not in x['title']) and ('Access denied' not in x['title'])
+             and ('Yahoo' not in x['title']) and ('Stock Market Insights' not in x['title']) and 
+             ('Attention Required!' not in x['title']) and ('Access Denied' not in x['title'])
+             and ('403 forbidden' not in x['title']) and ('Too Many Requests' not in x['title'])
+             and ('403 - Forbidden' not in x['title']) and ('NCSC' not in x['title'])
+             and ('BC Gov News' not in x['title']) and ('The Verge' not in x['title']) and ('Trackinsight' not in x['title'])
+             and ('Morning Headlines' not in x['title']) and ('Forbidden' not in x['title'])
+             and ('forbidden' not in x['title']) and ('Detroit Free Press' not in x['title'])
+             and ('reuters.com' not in x['title']) and ('403 unauthorized' not in x['title'])
+             and ('403 not available now' not in x['title']) and ('Not Acceptable' not in x['title']) 
+             and ('Your access to this site has been limited by the site owner' not in x['title'])
+             and ('404 - File or directory not found.' not in x['title'])]
 
-    # for item in list1:
-    #     if 'Fortune India: Business News, Strategy, Finance and Corporate ...' in item['source']:
-    #         item['source'] = 'Fortune India'
+    for item in list1:
+        if 'Fortune India: Business News, Strategy, Finance and Corporate ...' in item['source']:
+            item['source'] = 'Fortune India'
 
     return list1
 
-def headlines(link):
-    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
-    config = Config()
-    config.browser_user_agent = user_agent
-    link.strip()
-    page = Article(str(link), config=config)
-    try:
-        page.download()
-        page.parse()
-        return page.title
-    except:
-        return 'Untitled Page'
 
 #Related Words,influencers,HAshtags,Trending Topic
 ###########
@@ -227,7 +231,7 @@ def Trending_topics_news(keyword):
 def take_keyword():
     keyword = input("Enter keyword: ")
     country= input("Enter Country : ")
-    keyword += '/' + country
+    keyword += ' ' + country
         
     print(f'\n Fetching news  for- {keyword} \n')
     news_data = google_news_scraper(keyword)

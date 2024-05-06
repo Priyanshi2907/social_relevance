@@ -16,7 +16,7 @@ class SearchTweets(APIView):
             return Response("Failed to scrape Data", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         data={"tweets":scraped_tweets}  
-        print("data in view : ",data)      
+        #print("data in view : ",data)      
         return Response(data)
         # return Response(scraped_influencers)
 

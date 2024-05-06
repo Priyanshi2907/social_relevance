@@ -30,9 +30,10 @@ def twitter_search(keyword):
     }
     
     headers = {
-    	'X-RapidAPI-Key': '6b4e137a0dmshdfe171472b83b03p1dba21jsncf717056731c',
-      'X-RapidAPI-Host': 'twitter154.p.rapidapi.com'
+    	"X-RapidAPI-Key":  '7f38c01ec5msh6d33265667283d1p15a502jsn52ad05aac500',  # Rapid API key
+    	"X-RapidAPI-Host": "twitter154.p.rapidapi.com" 
     }
+    
    
     
     try:
@@ -171,8 +172,8 @@ def getresponse():
     #print("Top trending topics for {keyword}:", top_trending_topics)
 
 
-    #print(df_twitter)
+    print(df_twitter)
 
     return df_twitter
 
-getresponse()
+#getresponse()
