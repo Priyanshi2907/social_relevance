@@ -14,7 +14,7 @@ def twitter_search(keyword):
     Searches for the Tweets with certain keyword  
     '''
     url = "https://twitter154.p.rapidapi.com/search/search"
-    
+    #print(url)
     today = datetime.today()
     yesterday = today - timedelta(days=1)
     yesterday = yesterday.strftime('%Y-%m-%d')
@@ -39,7 +39,7 @@ def twitter_search(keyword):
     try:
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()  # Raise an exception for HTTP errors
-        print(response.json())
+        #print(response.json())
         for tweet in response.json()['results']:
             
             data_2 = [{
