@@ -34,13 +34,15 @@ def headlines(link):
 
 def google_news_scraper(keyword):
     ll = []
-    for j in range(0,20,4):
+    for j in range(0,20,5):
         link = f'https://www.google.co.in/search?q={keyword}+news&sca_esv=64568e91d4c772e8&tbm=nws&prmd=nivsmbtz&sxsrf=ACQVn0-qaS0objyOU3CfpFe1WOR3BQfJHw:1712395312013&ei=MBQRZoQ06-6x4w_n_4nQDA&start={j}&sa=N&ved=2ahUKEwiEjKbSoa2FAxVrd2wGHed_Aso4RhDy0wN6BAgDEAQ&biw=1536&bih=695&dpr=1.25'
         #link = 'https://www.google.com/search?q='+str(keyword) +' '+'news'
-        print(link)
+        
         ll.append(link)
 
     data = []
+    visited_urls = set()
+    visited_url_date=set()
     for link in ll:  
         driver.get(link)
         driver.implicitly_wait(5)
@@ -55,13 +57,15 @@ def google_news_scraper(keyword):
             source = row.find('div',attrs={'class':"MgUUmf NUnG9d"}).text
             date = row.find('div',attrs={'class':"OSrXXb rbYSKb LfVVr"}).text
             images = row.find('img').get('src')
-
-            des['source'] = source
-            des['link'] = url
-            des['title'] = title
-            des['date'] = date
-            des['image'] = images
-            data.append(des)
+            
+            if url not in visited_urls and date not in visited_url_date:
+                des['source'] = source
+                des['link'] = url
+                des['title'] = title
+                des['date'] = date
+                des['image'] = images
+                data.append(des)
+                visited_urls.add(url)
 
     today = datetime.today()
     yesterday = today - timedelta(days=1)
@@ -240,12 +244,12 @@ def take_keyword():
     authors = authors_news(keyword)
     Trending_topics = Trending_topics_news(keyword)
 
-    print(f'\n Top 10 Related Words for {keyword}: \n\n', relatedwords)
-    print("Top 10 Authors for {keyword}:", authors)
-    print("Top trending topics for {keyword}:", Trending_topics)
+    # print(f'\n Top 10 Related Words for {keyword}: \n\n', relatedwords)
+    # print("Top 10 Authors for {keyword}:", authors)
+    # print("Top trending topics for {keyword}:", Trending_topics)
 
 
     df = pd.DataFrame(news_data)
     print(df)
 
-#take_keyword()
+take_keyword()
