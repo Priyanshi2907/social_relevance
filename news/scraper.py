@@ -13,10 +13,19 @@ from datetime import datetime, timedelta, date
 import pandas as pd
 from lxml_html_clean import clean_html
 import google.generativeai as genai
-    
-    
-driver = webdriver.Chrome()
+from selenium.common.exceptions import WebDriverException
+   
+#driver = webdriver.Chrome()
 GOOGLE_API_KEY= 'AIzaSyAEgGg08BmZIDyxOiCVeRlibO9OTOLxTMs'
+
+try:
+    driver = webdriver.Chrome()
+except WebDriverException as e:    
+    time.sleep(20)  # Wait for 10 seconds before attempting to reconnect    
+    driver = webdriver.Chrome()  # Reinitialize the WebDriver
+         
+    
+
 
 def headlines(link):
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
@@ -255,4 +264,4 @@ def take_keyword():
     df = pd.DataFrame(news_data)
     print(df)
 
-#take_keyword()
+take_keyword()
