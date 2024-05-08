@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .scraper import *
+from . scraper_new import *
 from .auth_scraper import *
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -10,7 +11,7 @@ from rest_framework import status
 
 class SearchNews(APIView):
     def get(self,request,keyword):
-        scraped_news = google_news_scraper(keyword)
+        scraped_news = google_news_scraper_new(keyword)
         
         if scraped_news is None :
             return Response("Failed to scrape data", status=status.HTTP_500_INTERNAL_SERVER_ERROR)

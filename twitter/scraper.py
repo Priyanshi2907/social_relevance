@@ -30,7 +30,7 @@ def twitter_search(keyword):
     }
     
     headers = {
-    	"X-RapidAPI-Key":  "9b40f67b2fmsh43656bc83d75a1dp104372jsn969da4f481e3",  # Rapid API key
+    	"X-RapidAPI-Key":  "05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5",  # Rapid API key
     	"X-RapidAPI-Host": "twitter154.p.rapidapi.com" 
     }
     

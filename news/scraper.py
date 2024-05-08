@@ -21,7 +21,7 @@ GOOGLE_API_KEY= 'AIzaSyAEgGg08BmZIDyxOiCVeRlibO9OTOLxTMs'
 try:
     driver = webdriver.Chrome()
 except WebDriverException as e:    
-    time.sleep(20)  # Wait for 10 seconds before attempting to reconnect    
+    time.sleep(10)  # Wait for 10 seconds before attempting to reconnect    
     driver = webdriver.Chrome()  # Reinitialize the WebDriver
          
     
@@ -46,7 +46,7 @@ def google_news_scraper(keyword):
     for j in range(0,20,10):
         link = f'https://www.google.co.in/search?q={keyword}+news&sca_esv=64568e91d4c772e8&tbm=nws&prmd=nivsmbtz&sxsrf=ACQVn0-qaS0objyOU3CfpFe1WOR3BQfJHw:1712395312013&ei=MBQRZoQ06-6x4w_n_4nQDA&start={j}&sa=N&ved=2ahUKEwiEjKbSoa2FAxVrd2wGHed_Aso4RhDy0wN6BAgDEAQ&biw=1536&bih=695&dpr=1.25'
         #link = 'https://www.google.com/search?q='+str(keyword) +' '+'news'
-        driver.implicitly_wait(5)
+        
         ll.append(link)
 
     data = []
@@ -61,13 +61,13 @@ def google_news_scraper(keyword):
         news = soup.find_all("div",attrs={'class':"SoaBEf"})
         for row in news:
             des = {}
-            driver.implicitly_wait(5)
+            
             title = row.find('div',attrs={'class':"n0jPhd ynAwRc MBeuO nDgy9d"}).text
             url = row.find("a",attrs={'class':"WlydOe"}).get('href')
-            driver.implicitly_wait(5)
+            
             source = row.find('div',attrs={'class':"MgUUmf NUnG9d"}).text
             date = row.find('div',attrs={'class':"OSrXXb rbYSKb LfVVr"}).text
-            driver.implicitly_wait(5)
+            
             images = row.find('img').get('src')
             
             if url not in visited_urls and date not in visited_url_date:
@@ -264,4 +264,4 @@ def take_keyword():
     df = pd.DataFrame(news_data)
     print(df)
 
-take_keyword()
+#take_keyword()
