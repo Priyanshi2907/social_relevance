@@ -177,4 +177,4 @@ def getresponse():
 
     return df_twitter
 
-getresponse()
+#getresponse()

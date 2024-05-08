@@ -70,6 +70,6 @@ def main():
         print(df)
     else:
         print("No data fetched from the API.")
-main()
+#main()
 
 
