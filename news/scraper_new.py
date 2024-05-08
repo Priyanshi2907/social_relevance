@@ -3,19 +3,22 @@ import pandas as pd
 import json
 from datetime import datetime,timedelta
 
-def google_news_scraper_new(keyword):
+def google_news_scraper_new(keyword,country=None):
     print("keyword is this ,",keyword)
     url = "https://google-news13.p.rapidapi.com/search"
     
     today = datetime.today().strftime('%Y-%m-%d')
-    yesterday = datetime.today() - timedelta(days=31)
+    yesterday = datetime.today() - timedelta(days=210)
     yesterday = yesterday.strftime('%Y-%m-%d')
     
 
-    querystring = {"keyword":keyword,
-                   "lr" : 'en-US',
+    querystring = {"keyword":keyword
+                   
                    
                    }
+    if country:
+        querystring["lr"] = country
+
 
     headers = {
     "X-RapidAPI-Key": "ab7352931fmsh344160b283158fap188f76jsn220404eb19f6",
@@ -38,10 +41,10 @@ def google_news_scraper_new(keyword):
                     'source': news['publisher'],
                     'link': news['newsUrl'],
                     'title': news['title'],
-                    'image': news['images']['thumbnailProxied'],
+                    'image': news['images'].get('thumbnailProxied',''),
                     "Modified Dates": timestamp_to_date(news['timestamp'])
 
-            } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday ]
+            } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday  ]
 
             #if all(news.get(key) for key in ['publisher', 'newsUrl', 'title', 'images', 'timestamp'])]
     
