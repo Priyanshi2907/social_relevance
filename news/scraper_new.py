@@ -18,14 +18,14 @@ def google_news_scraper_new(keyword):
                    }
 
     headers = {
-    "X-RapidAPI-Key": "495637bb9cmshaa0c5183a668b8ep119c3bjsnb49a03095fbf",
+    "X-RapidAPI-Key": "05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5",
                       #"05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5"
     "X-RapidAPI-Host": "google-news13.p.rapidapi.com"
     }
     try:
         response = requests.get(url, headers=headers, params=querystring)
         
-        #print(response.json())
+        print(response.json())
         unique_url=set()
         #data=[]
         for idx,news in enumerate(response.json()['items']):
@@ -38,7 +38,7 @@ def google_news_scraper_new(keyword):
                     'source': news['publisher'],
                     'link': news['newsUrl'],
                     'title': news['title'],
-                    'image': news['images']['thumbnail'],
+                    'image': news['images']['thumbnailProxied'],
                     "Modified Dates": timestamp_to_date(news['timestamp'])
 
             } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday ]
