@@ -54,6 +54,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "*",
+    'http://3.111.217.195:5173'
+    # Add other allowed origins as needed
+]
+
+
 ROOT_URLCONF = 'socialrelevance.urls'
 
 TEMPLATES = [
