@@ -18,7 +18,7 @@ def google_news_scraper_new(keyword):
                    }
 
     headers = {
-    "X-RapidAPI-Key": "05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5",
+    "X-RapidAPI-Key": "7f38c01ec5msh6d33265667283d1p15a502jsn52ad05aac500",
                       #"05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5"
     "X-RapidAPI-Host": "google-news13.p.rapidapi.com"
     }
@@ -70,6 +70,6 @@ def main():
         print(df)
     else:
         print("No data fetched from the API.")
-#main()
+main()
 
 
