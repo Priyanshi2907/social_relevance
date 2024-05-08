@@ -23,13 +23,13 @@ class SearchTweets(APIView):
 
 class Influencers(APIView):
     def  get(self, request, keyword):
-        scraped_influencers=(influencers_twitter(keyword))
+        #scraped_influencers=(influencers_twitter(keyword))
         scraped_hashtags=(Hashtags_twitter(keyword)).split(' ')
         scraped_tt=(Trending_topics_twitter(keyword)).split('\n')
 
-        if scraped_influencers is None :
+        if scraped_hashtags is None :
                 return Response("Failed to scrape Data", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        data={"Influencers":scraped_influencers,"Top Hashtags":scraped_hashtags,"Trending Topics ":scraped_tt}        
+        data={"Top Hashtags":scraped_hashtags,"Trending Topics ":scraped_tt}        
         return Response(data)
  
 

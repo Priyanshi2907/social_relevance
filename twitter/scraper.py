@@ -16,7 +16,7 @@ def twitter_search(keyword):
     url = "https://twitter154.p.rapidapi.com/search/search"
     #print(url)
     today = datetime.today()
-    yesterday = today - timedelta(days=1)
+    yesterday = today - timedelta(days=31)
     yesterday = yesterday.strftime('%Y-%m-%d')
     
     querystring = {
@@ -30,31 +30,46 @@ def twitter_search(keyword):
     }
     
     headers = {
-    	"X-RapidAPI-Key":  "2f59f28d65msh19b32c620bd4bf2p184779jsn7074bb0f3327",  # Rapid API key
+    	"X-RapidAPI-Key":  "ab7352931fmsh344160b283158fap188f76jsn220404eb19f6",  # Rapid API key
     	"X-RapidAPI-Host": "twitter154.p.rapidapi.com" 
     }
     
    
     
-    try:
-        response = requests.get(url, headers=headers, params=querystring)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        #print(response.json())
-        for tweet in response.json()['results']:
+   
+    response = requests.get(url, headers=headers, params=querystring)
+    response.raise_for_status()  # Raise an exception for HTTP errors
+    #print(response.json())
+    for tweet in response.json()['results']:
             
+      try:   
             data_2 = [{
                 "tweet_id": tweet['tweet_id'],
                 "text": tweet['text'],
                 "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
                 "tweet_link": tweet['expanded_url'],
                 "user_screen_name": tweet['user']['username'],
+                "username": tweet['user']['name'],
+                "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
+                
+
             } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])]
+      except Exception as e:
+            data_2 = [{
+                "tweet_id": tweet['tweet_id'],
+                "text": tweet['text'],
+                "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
+                "tweet_link": tweet['expanded_url'],
+                "user_screen_name": tweet['user']['username'],
+                "username": tweet['user']['username'],
+                "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
 
+                
 
-            return data_2
-    except requests.exceptions.RequestException as e:
-        print("Error:", e)
-        return None  # Return None to indicate failure
+            } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])]
+       
+      return data_2
+      # Return None to indicate failure
 # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
 
 ###########

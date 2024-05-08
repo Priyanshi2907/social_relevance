@@ -8,7 +8,7 @@ def google_news_scraper_new(keyword):
     url = "https://google-news13.p.rapidapi.com/search"
     
     today = datetime.today().strftime('%Y-%m-%d')
-    yesterday = datetime.today() - timedelta(days=1)
+    yesterday = datetime.today() - timedelta(days=31)
     yesterday = yesterday.strftime('%Y-%m-%d')
     
 
@@ -18,7 +18,7 @@ def google_news_scraper_new(keyword):
                    }
 
     headers = {
-    "X-RapidAPI-Key": "7f38c01ec5msh6d33265667283d1p15a502jsn52ad05aac500",
+    "X-RapidAPI-Key": "ab7352931fmsh344160b283158fap188f76jsn220404eb19f6",
                       #"05a63cbb40mshb60cea8eed8b55bp1b2a8ejsn1037cb90c0d5"
     "X-RapidAPI-Host": "google-news13.p.rapidapi.com"
     }
