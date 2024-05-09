@@ -16,7 +16,7 @@ def twitter_search(keyword):
     url = "https://twitter154.p.rapidapi.com/search/search"
     #print(url)
     today = datetime.today()
-    yesterday = today - timedelta(days=31)
+    yesterday = today - timedelta(days=210)
     yesterday = yesterday.strftime('%Y-%m-%d')
     
     querystring = {
