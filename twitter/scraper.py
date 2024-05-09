@@ -16,7 +16,7 @@ def twitter_search(keyword):
     url = "https://twitter154.p.rapidapi.com/search/search"
     #print(url)
     today = datetime.today()
-    yesterday = today - timedelta(days=210)
+    yesterday = today - timedelta(days=4000)
     yesterday = yesterday.strftime('%Y-%m-%d')
     
     querystring = {
@@ -39,36 +39,47 @@ def twitter_search(keyword):
    
     response = requests.get(url, headers=headers, params=querystring)
     response.raise_for_status()  # Raise an exception for HTTP errors
-    #print(response.json())
+    print(response.json())
     for tweet in response.json()['results']:
+        #print (tweet['text'])
+        #if keyword.lower() in tweet['text'].lower() :
+            try:   
+                
+                data_2 = [{
+                    "tweet_id": tweet['tweet_id'],
+                    "text": tweet['text'].replace("&amp;","&").replace("&gt;",">") ,  
+                    "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
+                    "tweet_link": tweet['expanded_url'],
+                    "user_screen_name": tweet['user']['username'],
+                    "user_followers_count": tweet['user'].get('follower_count', 0),
+                    "username": tweet['user']['name'],                    
+                    "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
+                } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
+                and tweet['user'].get('follower_count')>=2000 and keyword.split(" ")[0].lower() in tweet['text'].lower()]
+        
+            except Exception as e:
+                data_2 = [{
+                    "tweet_id": tweet['tweet_id'],
+                    "text": tweet['text'].replace("&amp;","&").replace("&gt;",">") ,  
+                    "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
+                    "tweet_link": tweet['expanded_url'],
+                    "user_screen_name": tweet['user']['username'],
+                    "user_followers_count": tweet['user'].get('follower_count', 0),
+                    "username": tweet['user']['username'],
+                    "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
+
+                } for tweet in response.json()['results'] 
+                if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
+                and tweet['user'].get('follower_count')>=2000 
+                and keyword.split(" ")[0].lower in tweet['text'].lower()]
+
+    data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   
+    return data_2_sorted
+            # df=pd.DataFrame(data_2)
+            # print(df)
             
-      try:   
-            data_2 = [{
-                "tweet_id": tweet['tweet_id'],
-                "text": tweet['text'],
-                "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
-                "tweet_link": tweet['expanded_url'],
-                "user_screen_name": tweet['user']['username'],
-                "username": tweet['user']['name'],
-                "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
-                
-
-            } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])]
-      except Exception as e:
-            data_2 = [{
-                "tweet_id": tweet['tweet_id'],
-                "text": tweet['text'],
-                "created_at": datetime.strptime(tweet['creation_date'].replace('+0000', ''), "%a %b %d %H:%M:%S %Y").strftime('%Y-%m-%d'),
-                "tweet_link": tweet['expanded_url'],
-                "user_screen_name": tweet['user']['username'],
-                "username": tweet['user']['username'],
-                "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
-
-                
-
-            } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])]
-       
-      return data_2
+    
+    
       # Return None to indicate failure
 # Or use `os.getenv('GOOGLE_API_KEY')` to fetch an environment variable.
 

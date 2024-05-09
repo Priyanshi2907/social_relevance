@@ -49,14 +49,17 @@ def relatedwords_news(keyword):
     """
     Fetches Top Related Keywords for the given keyword
     """
+        # ,seperated by comma and without numbering and any symbol
+
     try:
         
         response = model.generate_content(f"""
   
             You are a helpful assistant that will help me in finding the Top 10 Related words for the following Keyword: {keyword}
-            in the form of list in a single line ,seperated by comma and without numbering and any symbol
+            in the form of  list in a single line ,seperated by comma and without numbering and any symbol
+
             
-            
+          
             """)
 
         return response.text

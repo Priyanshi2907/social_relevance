@@ -25,11 +25,19 @@ class Influencers(APIView):
     def  get(self, request, keyword):
         #scraped_influencers=(influencers_twitter(keyword))
         scraped_hashtags=(Hashtags_twitter(keyword)).split(' ')
+        for i in scraped_hashtags:
+             hash=i.split(",")
+
         scraped_tt=(Trending_topics_twitter(keyword)).split('\n')
+        for j in scraped_tt:
+             tt=j.split(",")
+
+        hash = [item.strip() for item in hash if item.strip() != '']  
+        tt = [item.strip() for item in tt if item.strip() != '']  
 
         if scraped_hashtags is None :
                 return Response("Failed to scrape Data", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        data={"Top Hashtags":scraped_hashtags,"Trending Topics ":scraped_tt}        
+        data={"Top Hashtags":hash,"Trending Topics ":tt}        
         return Response(data)
  
 
