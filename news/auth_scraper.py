@@ -96,7 +96,7 @@ def Trending_topics_news(keyword):
 
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
+            You are a helpful assistant that will help me in finding the Top 10 Trending Topics for the following Keyword: {keyword}                        
              ,in the form of list in a single line and without numbering and any symbol
             """)
 

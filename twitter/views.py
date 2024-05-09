@@ -24,7 +24,7 @@ class SearchTweets(APIView):
 class Influencers(APIView):
     def  get(self, request, keyword):
         #scraped_influencers=(influencers_twitter(keyword))
-        scraped_hashtags=(Hashtags_twitter(keyword)).split(' ')
+        scraped_hashtags=(Hashtags_twitter(keyword)).split('\n')
         for i in scraped_hashtags:
              hash=i.split(",")
 

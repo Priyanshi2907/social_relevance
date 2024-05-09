@@ -55,7 +55,9 @@ def twitter_search(keyword):
                     "username": tweet['user']['name'],                    
                     "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
                 } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
-                and tweet['user'].get('follower_count')>=2000 and keyword.split(" ")[0].lower() in tweet['text'].lower()]
+                and tweet['user'].get('follower_count')>=2000 
+                and keyword.split(" ")[0].lower() in tweet['text'].lower()
+                and keyword.split(" ")[-1].lower() in tweet['text'].lower()]
         
             except Exception as e:
                 data_2 = [{
@@ -71,7 +73,8 @@ def twitter_search(keyword):
                 } for tweet in response.json()['results'] 
                 if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
                 and tweet['user'].get('follower_count')>=2000 
-                and keyword.split(" ")[0].lower in tweet['text'].lower()]
+                and keyword.split(" ")[0].lower in tweet['text'].lower()
+                and keyword.split(" ")[-1].lower() in tweet['text'].lower()]
 
     data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   
     return data_2_sorted

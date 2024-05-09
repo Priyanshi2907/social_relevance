@@ -73,7 +73,8 @@ def Hashtags_twitter(keyword):
         response = model.generate_content(f"""
   
             You are a helpful assistant that will help me in finding the Top 10 Trending Hashtags  for the following Keyword: {keyword}                        
-            seperated by only space,in the form of list,in a single line
+            in the form of  list in a single line ,seperated by comma and without numbering and any symbol
+
             
             """)
 
@@ -91,7 +92,7 @@ def Trending_topics_twitter(keyword):
 
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top Trending Topics for the following Keyword: {keyword}                        
+            You are a helpful assistant that will help me in finding the Top 10 Trending Topics for the following Keyword: {keyword}                        
             ,in the form of list, in a single line, only the topics without any symbol and numbering
             """)
 

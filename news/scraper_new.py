@@ -12,12 +12,11 @@ def google_news_scraper_new(keyword,country=None):
     yesterday = yesterday.strftime('%Y-%m-%d')
     
 
-    querystring = {"keyword":keyword
-                   
-                   
+    querystring = {"keyword":keyword,
+                    "lr":"en-US"               
                    }
-    if country:
-        querystring["lr"] = country
+    # if country:
+    #     querystring["lr"] = country
 
 
     headers = {
@@ -45,8 +44,9 @@ def google_news_scraper_new(keyword,country=None):
                             'image': news['images'].get('thumbnailProxied',''),
                             "Modified Dates": timestamp_to_date(news['timestamp'])
         
-                    } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday  
-                    and keyword.split(" ")[-1].lower() in news['title'].lower() and keyword.split(" ")[0].lower() in news['title']]
+                    } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday ]
+                    # and keyword.split(" ")[-1].lower() in news['title'].lower() 
+                    #and keyword.split(" ")[0].lower() in news['title']]
                 except Exception as e:
                     data=[{
                             'source': news['publisher'],
@@ -55,8 +55,9 @@ def google_news_scraper_new(keyword,country=None):
                             'image': news['images'].get('thumbnailProxied',''),
                             "Modified Dates": timestamp_to_date(news['timestamp'])
         
-                    } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday  
-                    and keyword.split(" ")[-1].lower() in news['title'].lower() and keyword.split(" ")[0].lower() in news['title'] ]
+                    } for news in response.json()['items'] if timestamp_to_date(news['timestamp']) >= yesterday  ]
+                    # and keyword.split(" ")[-1].lower() in news['title'].lower() 
+                    # and keyword.split(" ")[0].lower() in news['title'] ]
 
             #if all(news.get(key) for key in ['publisher', 'newsUrl', 'title', 'images', 'timestamp'])]
     
