@@ -24,15 +24,20 @@ class relatedwords(APIView):
     def get(self,request,keyword):
         
         scraped_relatedwords= relatedwords_news(keyword).split("\n")
-        print(type(scraped_relatedwords))
-        print(scraped_relatedwords)
+        
         for i in scraped_relatedwords:
-            rwords=i.split(",")
+            if i[0].isdigit():
+                i = i.split(".", 1)[-1].strip()  # Remove numbering and strip whitespace
+            rwords = i.split(",") 
         
         
         scraped_tt= Trending_topics_news(keyword).split("\n")
+        print(type(scraped_tt))
+        print(scraped_tt)
         for j in scraped_tt:
-            tt=j.split(",")
+            if j[0].isdigit():
+                j = j.split(".", 1)[-1].strip()  # Remove numbering and strip whitespace
+            tt = j.split(",") 
         # tt=[i.strip() for i in tt]
         # rwords=[i.strip() for i in rwords]
         rwords = [item.strip() for item in rwords if item.strip() != '']    

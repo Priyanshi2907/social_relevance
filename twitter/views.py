@@ -26,11 +26,15 @@ class Influencers(APIView):
         #scraped_influencers=(influencers_twitter(keyword))
         scraped_hashtags=(Hashtags_twitter(keyword)).split('\n')
         for i in scraped_hashtags:
-             hash=i.split(",")
+                if i[0].isdigit():
+                   i = i.split(".", 1)[-1].strip()  # Remove numbering and strip whitespace
+                hash=i.split(",")
 
         scraped_tt=(Trending_topics_twitter(keyword)).split('\n')
         for j in scraped_tt:
-             tt=j.split(",")
+            if j[0].isdigit():
+                j = j.split(".", 1)[-1].strip()  # Remove numbering and strip whitespace
+            tt=j.split(",")
 
         hash = [item.strip() for item in hash if item.strip() != '']  
         tt = [item.strip() for item in tt if item.strip() != '']  

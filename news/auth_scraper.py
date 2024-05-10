@@ -56,7 +56,7 @@ def relatedwords_news(keyword):
         response = model.generate_content(f"""
   
             You are a helpful assistant that will help me in finding the Top 10 Related words for the following Keyword: {keyword}
-            in the form of  list in a single line ,seperated by comma and without numbering and any symbol
+            in the form of  list in a single line ,seperated by comma and and don't list the words with any numbering or any symbol at the starting of the topic,only give the words
 
             
           
@@ -68,25 +68,6 @@ def relatedwords_news(keyword):
         print(e)
         return "No response"
     
-def authors_news(keyword):
-    """
-    Fetches Top  Authors for the given keyword
-    """
-    try:
-        
-        response = model.generate_content(f"""
-  
-            You are a helpful assistant that will help me in finding the  Top 10 authors for the following Keyword: {keyword}
-            ,in the form of list in a single line and without numbering and any symbol
-            
-            
-            """)
-
-        return response.text
-        
-    except Exception as e:
-        print(e)
-        return "No response"
 
 def Trending_topics_news(keyword):
     """
@@ -96,8 +77,8 @@ def Trending_topics_news(keyword):
 
         response = model.generate_content(f"""
   
-            You are a helpful assistant that will help me in finding the Top 10 Trending Topics for the following Keyword: {keyword}                        
-             ,in the form of list in a single line and without numbering and any symbol
+            You are a helpful assistant that will help me in finding the min Top 10 Trending Topics for the following Keyword: {keyword}                        
+             ,in the form of list in a single line and don't make the list with any numbering or any symbol at the starting of the topic,only give the topic
             """)
 
         return response.text
@@ -115,11 +96,11 @@ def take_keyword():
     #news_data = google_news_scraper(keyword)
     
     relatedwords = relatedwords_news(keyword)
-    authors = authors_news(keyword)
+    #authors = authors_news(keyword)
     Trending_topics = Trending_topics_news(keyword)
 
     print(f'\n Top 10 Related Words for {keyword}: \n\n', relatedwords)
-    print("Top 10 Authors for {keyword}:", authors)
+    #print("Top 10 Authors for {keyword}:", authors)
     print("Top trending topics for {keyword}:", Trending_topics)
 
 
@@ -127,3 +108,22 @@ def take_keyword():
     #print(df)
 
 #take_keyword()
+# def authors_news(keyword):
+#     """
+#     Fetches Top  Authors for the given keyword
+#     """
+#     try:
+        
+#         response = model.generate_content(f"""
+  
+#             You are a helpful assistant that will help me in finding the  Top 10 authors for the following Keyword: {keyword}
+#             ,in the form of list in a single line and without numbering and any symbol
+            
+            
+#             """)
+
+#         return response.text
+        
+#     except Exception as e:
+#         print(e)
+#         return "No response"
