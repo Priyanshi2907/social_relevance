@@ -76,8 +76,8 @@ def twitter_search(keyword):
                 and keyword.split(" ")[0].lower in tweet['text'].lower()
                 and keyword.split(" ")[-1].lower() in tweet['text'].lower()]
 
-    data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   
-    return data_2_sorted
+            data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   
+            return data_2_sorted
             # df=pd.DataFrame(data_2)
             # print(df)
             
