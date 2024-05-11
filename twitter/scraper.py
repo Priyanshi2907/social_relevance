@@ -4,12 +4,22 @@ import requests
 from datetime import datetime, timedelta
 import pandas as pd
 import google.generativeai as genai
+import emoji
+import unicodedata
 
+def has_printable_emoji(text):
+    for char in text:
+        if char in emoji.UNICODE_EMOJI:
+            # Check if the character is printable
+            if not unicodedata.name(char):
+                return False
+    return True
 # Pass your Gemini API key here 
 
 GOOGLE_API_KEY= 'AIzaSyAEgGg08BmZIDyxOiCVeRlibO9OTOLxTMs'
 
 def twitter_search(keyword):
+    print("i m here")
     '''
     Searches for the Tweets with certain keyword  
     '''
@@ -44,7 +54,9 @@ def twitter_search(keyword):
         #print (tweet['text'])
         #if keyword.lower() in tweet['text'].lower() :
             try:   
-                
+                # username=tweet['user']['name']
+                # if not has_printable_emoji(username):
+                     
                 data_2 = [{
                     "tweet_id": tweet['tweet_id'],
                     "text": tweet['text'].replace("&amp;","&").replace("&gt;",">") ,  
@@ -54,12 +66,16 @@ def twitter_search(keyword):
                     "user_followers_count": tweet['user'].get('follower_count', 0),
                     "username": tweet['user']['name'],                    
                     "user_profile_link": 'https://twitter.com/' + tweet['user']['username']
-                } for tweet in response.json()['results'] if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
+                } for tweet in response.json()['results'] 
+                if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
                 and tweet['user'].get('follower_count')>=2000 
                 and keyword.split(" ")[0].lower() in tweet['text'].lower()
-                and keyword.split(" ")[-1].lower() in tweet['text'].lower()]
+                and keyword.split(" ")[-1].lower() in tweet['text'].lower()
+                ]
         
             except Exception as e:
+                # username=tweet['user']['username']
+                # if not has_printable_emoji(username):
                 data_2 = [{
                     "tweet_id": tweet['tweet_id'],
                     "text": tweet['text'].replace("&amp;","&").replace("&gt;",">") ,  
@@ -74,12 +90,14 @@ def twitter_search(keyword):
                 if all(tweet.get(key) for key in ['tweet_id', 'text', 'creation_date', 'expanded_url', 'user'])
                 and tweet['user'].get('follower_count')>=2000 
                 and keyword.split(" ")[0].lower in tweet['text'].lower()
-                and keyword.split(" ")[-1].lower() in tweet['text'].lower()]
+                and keyword.split(" ")[-1].lower() in tweet['text'].lower()
+                ]
 
             data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   
-            return data_2_sorted
             # df=pd.DataFrame(data_2)
             # print(df)
+            
+            return data_2_sorted
             
     
     
@@ -188,7 +206,7 @@ def getresponse():
     keyword += '/' + country
         
     print(f'\n Fetching tweets for- {keyword} \n')
-
+    
     df_twitter=twitter_search(keyword)
     # top_influencers = (influencers_twitter(keyword))
     # top_hashtags = (Hashtags_twitter(keyword)).split(' ')
@@ -202,8 +220,8 @@ def getresponse():
     #print("Top trending topics for {keyword}:", top_trending_topics)
 
 
-    print(df_twitter)
+    # print(df_twitter)
 
-    return df_twitter
+    # return df_twitter
 
 #getresponse()

@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import re
 
 # Create your views here.
 
@@ -28,6 +29,7 @@ class relatedwords(APIView):
         for i in scraped_relatedwords:
             if i[0].isdigit():
                 i = i.split(".", 1)[-1].strip()  # Remove numbering and strip whitespace
+            # i = i.replace("**", "").replace("-", "").replace("/", "")  # Remove specific symbols
             rwords = i.split(",") 
         
         
@@ -40,9 +42,9 @@ class relatedwords(APIView):
             tt = j.split(",") 
         # tt=[i.strip() for i in tt]
         # rwords=[i.strip() for i in rwords]
-        rwords = [item.strip() for item in rwords if item.strip() != '']    
-        tt = [item.strip() for item in tt if item.strip() != '']    
-
+        rwords = [re.sub(r'^\d+\.\s*', '', item.strip()) for item in rwords if item.strip()]
+        tt = [re.sub(r'^\d+\.\s*', '', item.strip()) for item in tt if item.strip()]
+    
 
         if scraped_relatedwords is None :
             return Response("Failed to scrape data", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
