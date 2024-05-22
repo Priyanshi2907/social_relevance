@@ -18,6 +18,13 @@ def has_printable_emoji(text):
 
 GOOGLE_API_KEY= 'AIzaSyAEgGg08BmZIDyxOiCVeRlibO9OTOLxTMs'
 
+def remove_problematic_chars(text):
+    problematic_chars = ["\U0001F000-\U0001F9FF", ""]  
+    for char in problematic_chars:
+        text = text.replace(char, '')
+
+    return text
+
 def twitter_search(keyword):
     print("i m here")
     '''
@@ -53,7 +60,9 @@ def twitter_search(keyword):
     for tweet in response.json()['results']:
         #print (tweet['text'])
         #if keyword.lower() in tweet['text'].lower() :
-            try:   
+            try:  
+                # if tweet['user']['username']=="Obrien Tech ":
+                #     tweet['user']['username'] = remove_problematic_chars(tweet['user']['username']) 
                 # username=tweet['user']['name']
                 # if not has_printable_emoji(username):
                      
@@ -71,6 +80,7 @@ def twitter_search(keyword):
                 and tweet['user'].get('follower_count')>=2000 
                 and keyword.split(" ")[0].lower() in tweet['text'].lower()
                 and keyword.split(" ")[-1].lower() in tweet['text'].lower()
+                # and tweet['user']['username'] !="Obrien Tech "
                 ]
         
             except Exception as e:
@@ -91,6 +101,7 @@ def twitter_search(keyword):
                 and tweet['user'].get('follower_count')>=2000 
                 and keyword.split(" ")[0].lower in tweet['text'].lower()
                 and keyword.split(" ")[-1].lower() in tweet['text'].lower()
+                # and tweet['user']['username'] !="Obrien Tech "
                 ]
 
             data_2_sorted = sorted(data_2, key=lambda x: x['user_followers_count'], reverse=True)   

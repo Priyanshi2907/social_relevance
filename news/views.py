@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .scraper import *
+#from .scraper import *
 from . scraper_new import *
 from .auth_scraper import *
 from django.http import JsonResponse
